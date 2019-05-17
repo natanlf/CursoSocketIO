@@ -1,0 +1,16 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+
+<script>
+
+    const socket = io('http://localhost:8000')
+
+    console.log(socket)
+
+    //CONECTANDO COM O SERVER E ESCUTANDO O EVENTO CONNECT
+    socket.on('connect', (data)=>{
+        socket.on('welcome', message=>{
+            console.log(message) //recebe a mensagem so servidor
+        })
+        socket.emit('message', {data: 'Estou conectado ao servidor e estou enviando essa mensagem para ele'})
+    })
+</script>
