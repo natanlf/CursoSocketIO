@@ -15,7 +15,18 @@ io.on('connection',(socket)=>{
     })
     socket.on('newMessageToServer',(msg)=>{
         // console.log(msg)
-        io.emit('messageToClients',{text:msg.text})
+        //io.emit('messageToClients',{text:msg.text})
+        io.of('/').emit('messageToClients',{text:msg.text}) // .of('/') emitimos para um namespace, quando colocamos apenas a barra é o namespace raiz
     })
+
+    setTimeout(()=>{ //a mensagem só enviada por causa do delay de 2 segundos, pois não é possível emitir pelo namespace admin porque a conexão não foi feita, após 2 segundos a conexão foi feita
+        io.of('/admin').emit('welcome', "Welcome to the admin channel, from the main channel!")
+    }, 2000)
+    
+})
+
+io.of('/admin').on('connection',(socket)=>{ //permite conexão com o namespace admin
+    console.log("Someone connected to the admin namespace!")
+    io.of('/admin').emit('welcome', "Welcome to the admin channel!")
 })
 
